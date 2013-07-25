@@ -1,0 +1,68 @@
+<html>
+<style>
+body {
+  text-align: center;
+  background: black;
+  }
+#countdown {
+	margin: auto auto;
+	font-family: "DS-Digital", serif;
+	text-align: center;
+	font-size: 500px;
+	height: 100%;
+}
+#cd {
+	color: red;
+}
+#cu {
+	color: white;
+}
+
+</style>
+<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="jquery.countdown.js"></script>
+
+
+<script type="text/javascript">
+function getQ( name ){
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+	return "";
+  else
+	return results[1];
+}
+
+var mins = parseInt(getQ("m")) || 1;
+var secs = parseInt(getQ("s")) || 0;
+
+var now = new Date();
+var now = new Date(now.getTime() + 1000*(mins*60 + secs));
+jQuery(document).ready(function(){
+	jQuery("#cd").countdown({
+		until: now,
+		layout: '<td>{mnn}</td><td>:</td><td>{snn}</td>',
+		onExpiry: countUp
+	});
+});
+
+function countUp(){
+	jQuery("#cd").remove();
+	jQuery("#countdown").html("<tr id='cu' valign='middle'></tr>");
+	jQuery("#cu").countdown({
+		since: now,
+		layout: '<td>-{mnn}</td><td>:</td><td>{snn}</td>'
+	});
+}
+
+</script>
+<body>
+
+  <table id='countdown'>
+  	<tr id='cd' valign="middle"></tr>
+  </table>
+
+</body>
+</html>
